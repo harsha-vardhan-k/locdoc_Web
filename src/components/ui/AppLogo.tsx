@@ -40,33 +40,47 @@ const AppLogo = memo(function AppLogo({
         aria-hidden="true"
         style={{ flexShrink: 0 }}
       >
-        {/* Background pill */}
+        {/* Background rounded square */}
         <rect width="40" height="40" rx="11" fill={isWhite ? 'rgba(255,255,255,0.15)' : 'url(#logoGrad)'} />
 
-        {/* Location pin shape */}
-        {/* Pin body — teardrop path: circle top + pointed bottom */}
-        <path
-          d="M20 7C15.582 7 12 10.582 12 15C12 20.25 20 33 20 33C20 33 28 20.25 28 15C28 10.582 24.418 7 20 7Z"
-          fill="white"
-          fillOpacity={isWhite ? 0.95 : 1}
-        />
-
-        {/* Stethoscope head (circle) inside the pin */}
-        <circle cx="20" cy="15" r="4.5" fill={isWhite ? 'rgba(255,255,255,0.2)' : 'url(#logoGrad)'} />
-
-        {/* Stethoscope chest-piece ring */}
-        <circle cx="20" cy="15" r="3" fill="none" stroke="white" strokeWidth="1.6" />
-
-        {/* Stethoscope tube — small arc coming out top-right */}
-        <path
-          d="M22.1 12.5 C23.5 11 25 11.5 25 13.5"
-          stroke="white"
-          strokeWidth="1.4"
-          strokeLinecap="round"
+        {/* Stethoscope design */}
+        {/* Chest piece — circle at bottom left */}
+        <circle
+          cx="13"
+          cy="27"
+          r="4"
           fill="none"
+          stroke="white"
+          strokeWidth="2"
+          strokeOpacity={isWhite ? 0.9 : 1}
         />
-        {/* Earpiece dot */}
-        <circle cx="25" cy="13.5" r="0.9" fill="white" />
+        {/* Inner dot of chest piece */}
+        <circle cx="13" cy="27" r="1.5" fill="white" fillOpacity={isWhite ? 0.7 : 0.9} />
+
+        {/* Tube: from chest piece up and curving to earpiece */}
+        {/* Vertical segment up from chest piece */}
+        <path
+          d="M13 23 L13 17 Q13 13 17 13 L23 13 Q27 13 27 17 L27 20"
+          stroke="white"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+          strokeOpacity={isWhite ? 0.9 : 1}
+        />
+
+        {/* Earpiece — small circle at top right end */}
+        <circle
+          cx="27"
+          cy="21"
+          r="2.5"
+          fill="white"
+          fillOpacity={isWhite ? 0.85 : 1}
+        />
+
+        {/* Medical cross — small, top-right area of icon */}
+        <rect x="29" y="7" width="2" height="6" rx="1" fill="white" fillOpacity={isWhite ? 0.6 : 0.85} />
+        <rect x="27" y="9" width="6" height="2" rx="1" fill="white" fillOpacity={isWhite ? 0.6 : 0.85} />
 
         <defs>
           <linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
