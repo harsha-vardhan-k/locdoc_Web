@@ -43,13 +43,30 @@ const AppLogo = memo(function AppLogo({
         {/* Background pill */}
         <rect width="40" height="40" rx="11" fill={isWhite ? 'rgba(255,255,255,0.15)' : 'url(#logoGrad)'} />
 
-        {/* Cross / plus mark — medical symbol */}
-        <rect x="17.5" y="10" width="5" height="20" rx="2.5" fill="white" />
-        <rect x="10" y="17.5" width="20" height="5" rx="2.5" fill="white" />
+        {/* Location pin shape */}
+        {/* Pin body — teardrop path: circle top + pointed bottom */}
+        <path
+          d="M20 7C15.582 7 12 10.582 12 15C12 20.25 20 33 20 33C20 33 28 20.25 28 15C28 10.582 24.418 7 20 7Z"
+          fill="white"
+          fillOpacity={isWhite ? 0.95 : 1}
+        />
 
-        {/* Small location pin dot at bottom-right */}
-        <circle cx="29" cy="29" r="4" fill={isWhite ? 'rgba(255,255,255,0.9)' : '#0891B2'} />
-        <circle cx="29" cy="29" r="2" fill="white" />
+        {/* Stethoscope head (circle) inside the pin */}
+        <circle cx="20" cy="15" r="4.5" fill={isWhite ? 'rgba(255,255,255,0.2)' : 'url(#logoGrad)'} />
+
+        {/* Stethoscope chest-piece ring */}
+        <circle cx="20" cy="15" r="3" fill="none" stroke="white" strokeWidth="1.6" />
+
+        {/* Stethoscope tube — small arc coming out top-right */}
+        <path
+          d="M22.1 12.5 C23.5 11 25 11.5 25 13.5"
+          stroke="white"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+          fill="none"
+        />
+        {/* Earpiece dot */}
+        <circle cx="25" cy="13.5" r="0.9" fill="white" />
 
         <defs>
           <linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
