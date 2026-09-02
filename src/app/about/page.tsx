@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import AppLayout from '@/components/AppLayout';
-import { Calendar, Navigation2, Target, Bell, CheckCircle2, Search, Shield, Layers, Users, Star, Building2, ShieldCheck, Clock, TrendingDown,  } from 'lucide-react';
+import { Calendar, Navigation2, Target, Bell, CheckCircle2, Search, Shield, Layers, Users, Star, Building2, ShieldCheck, Clock, TrendingDown } from 'lucide-react';
 
 const NAV_TABS = ['Our Story', 'The LocDoc Engine', 'How It Works', 'By the Numbers', 'Principles', 'Team'];
 
@@ -43,37 +43,35 @@ function OurStory() {
           About LocDoc
         </div>
         <h1 className="page-headline text-white mb-6 reveal-up">
-          We&apos;re making one broken<br />
+          Local healthcare,<br />
           <span style={{ background: 'linear-gradient(135deg, #60a5fa 0%, #22d3ee 50%, #a78bfa 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-            promise work again.
+            finally on time.
           </span>
         </h1>
         <p className="text-lg text-white/50 max-w-2xl mx-auto leading-relaxed reveal-up">
-          LocDoc is a SaaS platform for local healthcare that makes appointment times trustworthy.
-          Around that core, we run facility operations for hospitals and clinics, and a discovery
-          marketplace connecting patients to nearby pharmacies and diagnostic labs.
+          LocDoc connects patients to nearby doctors, pharmacies, and diagnostic labs — and makes
+          sure the appointment time you book is the time that actually happens.
         </p>
       </div>
 
-      {/* Problem section */}
       <div className="relative max-w-5xl mx-auto px-6 mt-16 grid md:grid-cols-2 gap-6 items-start">
         <div className="reveal-left">
-          <h2 className="tight-headline text-white mb-4">The problem, plainly</h2>
+          <h2 className="tight-headline text-white mb-4">Why we exist</h2>
           <p className="text-sm text-white/50 leading-relaxed">
-            Patients wait for hours because doctors run late, are in rounds, or are travelling
-            between facilities — with no visibility and no warning. Facilities lose capacity to
-            no-shows while other patients are turned away. And smaller clinics, pharmacies and labs
-            run on fragmented, paper-based systems, so none of this is even visible digitally.
+            Every day, patients sit in waiting rooms for hours — not because doctors are busy,
+            but because no one told them the doctor was running late. Facilities lose revenue to
+            no-shows while other patients are turned away. LocDoc was built to fix that
+            communication gap, for patients and facilities alike.
           </p>
         </div>
         <div className="glass-card rounded-2xl p-6 reveal-right bento-hover card-shine">
-          <p className="text-sm font-bold text-white mb-4">What we&apos;re solving for</p>
+          <p className="text-sm font-bold text-white mb-4">What we fix</p>
           <ul className="space-y-3">
             {[
-              'Reduce average patient wait time caused by doctor delay.',
-              'Reduce appointment no-show rate through confirm-or-release and waitlist backfill.',
-              'Give facilities usable digital operations without forcing them to replace existing software.',
-              'Give patients accurate local availability for medicines and diagnostic tests before they travel.',
+              'Patients get advance notice when their doctor is running late.',
+              'No-shows drop through timely confirm-or-release prompts.',
+              'Released slots are automatically filled from the waitlist.',
+              'Nearby medicine and lab availability is visible before you travel.',
             ].map((item) => (
               <li key={item} className="flex items-start gap-2 text-sm text-white/60">
                 <CheckCircle2 size={15} className="text-emerald-400 mt-0.5 flex-shrink-0" />
@@ -89,17 +87,17 @@ function OurStory() {
 
 // ── LocDoc Engine ──────────────────────────────────────────────────────────
 const ENGINE_STEPS = [
-  { icon: Calendar, title: 'Slot booked', desc: 'Patient books a doctor at a specific facility & time.' },
-  { icon: Navigation2, title: 'Doctor In Transit', desc: 'Opt-in location status begins as the doctor heads in.' },
-  { icon: Target, title: 'Delay detected', desc: 'Projected arrival is compared to the booked slot automatically.' },
-  { icon: Bell, title: 'Everyone notified', desc: 'Every affected patient gets the revised time — app, SMS or WhatsApp.' },
-  { icon: CheckCircle2, title: 'Choice, not chaos', desc: 'Accept, reschedule, or switch to another doctor — in one tap.' },
+  { icon: Calendar, title: 'Slot booked', desc: 'Patient books a doctor at a specific facility and time.' },
+  { icon: Navigation2, title: 'Doctor in transit', desc: 'Opt-in location status activates as the doctor heads in.' },
+  { icon: Target, title: 'Delay detected', desc: 'Projected arrival is compared to the booked slot in real time.' },
+  { icon: Bell, title: 'Patients notified', desc: 'Every affected patient gets the revised time via app, SMS, or WhatsApp.' },
+  { icon: CheckCircle2, title: 'Patient chooses', desc: 'Accept the new time, reschedule, or switch doctors — in one tap.' },
 ];
 
 const ENGINE_STATS = [
   { value: '< 10%', label: 'Doctor ghosting rate', desc: 'Arrivals >15 min late without prior notice' },
   { value: '> 30 min', label: 'Notification lead time', desc: 'Median advance warning before a delay' },
-  { value: '< 12%', label: 'Patient no-show rate', desc: 'Booked visits with no attendance, no cancellation' },
+  { value: '< 12%', label: 'Patient no-show rate', desc: 'Booked visits with no attendance or cancellation' },
   { value: '> 40%', label: 'Slot recovery', desc: 'Released slots refilled from the waitlist same day' },
   { value: '> 60%', label: 'Confirm response rate', desc: 'Patients responding to the T-2h confirm prompt' },
   { value: '> 90%', label: 'Reservation reliability', desc: 'Medicine & test reservations honoured on arrival' },
@@ -112,19 +110,18 @@ function LocDocEngine() {
       <div className="max-w-3xl mx-auto px-6 text-center mb-12">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-xs font-medium text-blue-600 mb-6 reveal-up">
           <span className="w-1.5 h-1.5 rounded-full bg-blue-500 inline-block" />
-          The LocDoc difference
+          The LocDoc Engine
         </span>
         <h2 className="tight-headline text-foreground mb-5 reveal-up">
-          We built the one thing every healthcare app forgot:{' '}
-          <span className="text-gradient-brand">punctuality.</span>
+          The infrastructure behind{' '}
+          <span className="text-gradient-brand">every on-time visit.</span>
         </h2>
         <p className="text-base text-muted-foreground leading-relaxed max-w-xl mx-auto reveal-up">
-          Doctors run late. Patients don&apos;t show up. Nobody finds out until they&apos;re already
-          sitting in a waiting room. The LocDoc Engine closes that gap — in both directions.
+          Our punctuality engine tracks doctor status in real time, detects delays automatically,
+          and gives patients options — before they ever leave home.
         </p>
       </div>
 
-      {/* Flow steps */}
       <div className="max-w-5xl mx-auto px-6">
         <div className="bg-card rounded-2xl p-5 shadow-md border border-border reveal-scale">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-0">
@@ -146,7 +143,6 @@ function LocDocEngine() {
         </div>
       </div>
 
-      {/* Stats bento grid */}
       <div className="max-w-5xl mx-auto px-6 mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
         {ENGINE_STATS.map((s, i) => (
           <div key={s.label} className="reveal-up glass-light rounded-xl p-3 micro-lift glow-border-hover" style={{ transitionDelay: `${i * 60}ms` }}>
@@ -162,10 +158,10 @@ function LocDocEngine() {
 
 // ── How It Works ───────────────────────────────────────────────────────────
 const HOW_STEPS = [
-  { icon: Search, title: 'Search & book', desc: 'Find doctors by specialty, clinic or location, and book a slot in a few taps — no login wall to browse.' },
-  { icon: Target, title: 'See real status', desc: 'Your appointment screen shows live doctor status, not a static time — Available, In Transit, In Rounds.' },
-  { icon: Bell, title: 'Confirm or reschedule', desc: 'Get a nudge at T-24h and T-2h. If your doctor runs late, you get options — not silence.' },
-  { icon: CheckCircle2, title: 'Walk in with confidence', desc: 'Show up knowing the wait is real, or shift on your terms. Non-app patients get the same by SMS/WhatsApp.' },
+  { icon: Search, title: 'Find & book', desc: 'Search doctors by specialty, clinic, or location. Book a slot in seconds — no account needed to browse.' },
+  { icon: Target, title: 'Track live status', desc: 'Your appointment screen shows real-time doctor status: Available, In Transit, or In Rounds.' },
+  { icon: Bell, title: 'Get notified early', desc: 'Receive a reminder at T-24h and T-2h. If your doctor is delayed, you hear about it first.' },
+  { icon: CheckCircle2, title: 'Arrive with certainty', desc: 'Walk in knowing the wait is real. Non-app users get the same experience over SMS or WhatsApp.' },
 ];
 
 function HowItWorks() {
@@ -184,9 +180,9 @@ function HowItWorks() {
           How it works
         </span>
         <h2 className="tight-headline text-white reveal-up">
-          From search to seen —<br />
+          Book, track, and arrive —<br />
           <span style={{ background: 'linear-gradient(135deg, #22d3ee, #60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-            without the guesswork.
+            no surprises.
           </span>
         </h2>
       </div>
@@ -225,10 +221,10 @@ function HowItWorks() {
 
 // ── By the Numbers ─────────────────────────────────────────────────────────
 const METRICS = [
-  { icon: ShieldCheck, value: '2,400+', label: 'NMC Verified Doctors', color: 'text-emerald-400', bg: 'bg-emerald-500/15', border: 'border-emerald-500/25', description: 'Fully credentialed & background-checked', span: 'lg:col-span-2' },
-  { icon: TrendingDown, value: '82%', label: 'Ghosting Rate Reduction', color: 'text-blue-400', bg: 'bg-blue-500/15', border: 'border-blue-500/25', description: 'Doctors who actually show up', span: '' },
-  { icon: Clock, value: '< 15 min', label: 'Avg Wait Time Alert', color: 'text-cyan-400', bg: 'bg-cyan-500/15', border: 'border-cyan-500/25', description: 'Live tracking, no surprises', span: '' },
-  { icon: Users, value: '18,000+', label: 'Patients Served', color: 'text-purple-400', bg: 'bg-purple-500/15', border: 'border-purple-500/25', description: 'Across pilot cities & clinics', span: '' },
+  { icon: ShieldCheck, value: '2,400+', label: 'Verified Doctors', color: 'text-emerald-400', bg: 'bg-emerald-500/15', border: 'border-emerald-500/25', description: 'Credentialed & background-checked', span: 'lg:col-span-2' },
+  { icon: TrendingDown, value: '82%', label: 'Ghosting Reduction', color: 'text-blue-400', bg: 'bg-blue-500/15', border: 'border-blue-500/25', description: 'Fewer unannounced late arrivals', span: '' },
+  { icon: Clock, value: '< 15 min', label: 'Avg Delay Alert', color: 'text-cyan-400', bg: 'bg-cyan-500/15', border: 'border-cyan-500/25', description: 'Patients notified well in advance', span: '' },
+  { icon: Users, value: '18,000+', label: 'Patients Served', color: 'text-purple-400', bg: 'bg-purple-500/15', border: 'border-purple-500/25', description: 'Across pilot cities and clinics', span: '' },
   { icon: Building2, value: '340+', label: 'Partner Facilities', color: 'text-orange-400', bg: 'bg-orange-500/15', border: 'border-orange-500/25', description: 'Clinics, labs & pharmacies', span: '' },
   { icon: Star, value: '4.7 / 5', label: 'Patient Satisfaction', color: 'text-yellow-400', bg: 'bg-yellow-500/15', border: 'border-yellow-500/25', description: 'Rated by verified patients', span: '' },
 ];
@@ -243,11 +239,11 @@ function ByTheNumbers() {
             By the numbers
           </span>
           <h2 className="tight-headline text-foreground mb-4">
-            Healthcare that delivers —<br />
-            <span className="text-gradient-brand">measurably.</span>
+            Progress you can<br />
+            <span className="text-gradient-brand">measure.</span>
           </h2>
           <p className="text-base text-muted-foreground max-w-xl mx-auto">
-            Real outcomes from our active pilot. Every metric is tracked, verified, and improving.
+            Real outcomes from our active pilot. Every number is tracked and improving.
           </p>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -274,10 +270,10 @@ function ByTheNumbers() {
 
 // ── Principles ─────────────────────────────────────────────────────────────
 const PRINCIPLES = [
-  { icon: Target, title: 'Punctuality is the product', desc: "Every other feature exists to support one promise: the time you\'re given is the time that happens." },
-  { icon: Shield, title: 'Trust is earned, not claimed', desc: 'Facilities are verified against government certificates. Doctors are matched against official medical registers.' },
-  { icon: Layers, title: 'Adoption on your terms', desc: 'No facility is asked to rip out what already works. Start small, add modules only when they make sense.' },
-  { icon: Users, title: 'Built for every patient', desc: 'The full ghosting-prevention experience works over SMS and WhatsApp too — an app is an upgrade, never a requirement.' },
+  { icon: Target, title: 'Punctuality is the product', desc: 'Every feature exists to support one promise: the time you book is the time that happens.' },
+  { icon: Shield, title: 'Trust is verified, not assumed', desc: 'Facilities are checked against government certificates. Doctors are matched to official medical registers.' },
+  { icon: Layers, title: 'Adopt at your own pace', desc: 'No facility needs to replace what already works. Start with one module and expand when it makes sense.' },
+  { icon: Users, title: 'Works for every patient', desc: 'The full experience runs over SMS and WhatsApp too — the app is an upgrade, never a requirement.' },
 ];
 
 function Principles() {
@@ -292,12 +288,12 @@ function Principles() {
       <div className="relative max-w-3xl mx-auto px-6 text-center mb-12">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full glass border border-white/10 text-xs font-medium text-blue-300 mb-6 reveal-up">
           <span className="w-1.5 h-1.5 rounded-full bg-blue-400 inline-block" />
-          How we operate
+          Our principles
         </span>
         <h2 className="tight-headline text-white reveal-up">
-          The principles behind<br />
+          What guides<br />
           <span style={{ background: 'linear-gradient(135deg, #60a5fa, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-            every screen.
+            every decision.
           </span>
         </h2>
       </div>
@@ -318,10 +314,10 @@ function Principles() {
 
 // ── Team ───────────────────────────────────────────────────────────────────
 const TEAM = [
-  { initials: 'SV', name: 'Samapath V', role: 'Co-Founder', desc: "Shaping the product vision behind LocDoc\'s ghosting-prevention engine." },
-  { initials: 'VE', name: 'Venu E', role: 'Co-Founder', desc: 'Building the platform and trust layer that facilities and doctors rely on.' },
-  { initials: 'MM', name: 'Madhu M', role: 'Co-Founder', desc: 'Driving facility onboarding and the operations that keep LocDoc reliable.' },
-  { initials: 'HK', name: 'Harsha K', role: 'Co-Founder', desc: 'Leading design and experience across the patient, doctor and facility apps.' },
+  { initials: 'SV', name: 'Samapath V', role: 'Co-Founder', desc: 'Shapes the product vision and the ghosting-prevention engine at the core of LocDoc.' },
+  { initials: 'VE', name: 'Venu E', role: 'Co-Founder', desc: 'Builds the platform and the trust layer that facilities and doctors depend on.' },
+  { initials: 'MM', name: 'Madhu M', role: 'Co-Founder', desc: 'Leads facility onboarding and the operations that keep LocDoc running reliably.' },
+  { initials: 'HK', name: 'Harsha K', role: 'Co-Founder', desc: 'Owns design and experience across the patient, doctor, and facility apps.' },
 ];
 
 function Team() {
@@ -334,9 +330,12 @@ function Team() {
           The team
         </span>
         <h2 className="tight-headline text-foreground reveal-up">
-          Built by a small team<br />
-          <span className="text-gradient-brand">that showed up on time.</span>
+          Four founders,<br />
+          <span className="text-gradient-brand">one shared obsession.</span>
         </h2>
+        <p className="text-sm text-muted-foreground mt-4 max-w-md mx-auto reveal-up">
+          We built LocDoc because we experienced the problem firsthand — and decided to fix it.
+        </p>
       </div>
       <div className="max-w-4xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {TEAM.map((member, i) => (
@@ -374,7 +373,6 @@ export default function AboutPage() {
 
   return (
     <AppLayout>
-      {/* Sticky tab nav */}
       <div className="sticky top-16 z-30 glass-dark border-b border-white/10">
         <div className="max-w-5xl mx-auto px-6 flex gap-1 overflow-x-auto py-2 scrollbar-hide">
           {NAV_TABS.map((tab) => (
