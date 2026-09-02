@@ -188,30 +188,48 @@ function HowItWorks() {
       </div>
 
       <div className="relative max-w-4xl mx-auto px-6">
-        <div className="relative flex items-center mb-10 reveal-up">
-          <div className="absolute left-0 right-0 h-px bg-white/10" />
-          {HOW_STEPS.map((_, i) => (
-            <button key={i} onClick={() => setActive(i)} className="relative flex-1 flex flex-col items-center">
-              <span className="text-[10px] text-white/30 mb-2 font-mono">0{i + 1}</span>
-              <div className={`w-4 h-4 rounded-full border-2 transition-all z-10 ${i === active ? 'bg-blue-500 border-blue-400 scale-125' : i < active ? 'bg-blue-500/40 border-blue-400/40' : 'bg-white/10 border-white/20'}`} />
-            </button>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {/* Timeline + Cards in a single aligned row */}
+        <div className="flex items-start gap-0 reveal-up">
           {HOW_STEPS.map((step, i) => (
-            <button
-              key={step.title}
-              onClick={() => setActive(i)}
-              className={`text-left p-4 rounded-xl border transition-all reveal-up bento-hover card-shine ${i === active ? 'glass-card border-blue-400/30' : 'glass border-white/10 hover:border-white/20'}`}
-              style={{ transitionDelay: `${i * 80}ms` }}
-            >
-              <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-2.5 ${i === active ? 'bg-blue-500/30 border border-blue-400/30' : 'bg-white/10'}`}>
-                <step.icon size={15} className={i === active ? 'text-blue-300' : 'text-white/50'} />
+            <div key={step.title} className="flex-1 flex flex-col items-center">
+              {/* Step number + dot */}
+              <div className="flex flex-col items-center w-full mb-4">
+                <span className="text-[10px] text-white/30 mb-2 font-mono">0{i + 1}</span>
+                <div className="relative w-full flex items-center justify-center">
+                  {/* Left line */}
+                  {i > 0 && <div className="absolute right-1/2 left-0 h-px bg-white/10" />}
+                  {/* Right line */}
+                  {i < HOW_STEPS.length - 1 && <div className="absolute left-1/2 right-0 h-px bg-white/10" />}
+                  <button
+                    onClick={() => setActive(i)}
+                    className={`relative z-10 w-4 h-4 rounded-full border-2 transition-all flex-shrink-0 ${
+                      i === active
+                        ? 'bg-blue-500 border-blue-400 scale-125'
+                        : i < active
+                        ? 'bg-blue-500/40 border-blue-400/40' :'bg-white/10 border-white/20'
+                    }`}
+                  />
+                </div>
               </div>
-              <p className={`text-xs font-bold mb-1 ${i === active ? 'text-white' : 'text-white/60'}`}>{step.title}</p>
-              <p className={`text-[11px] leading-relaxed ${i === active ? 'text-white/60' : 'text-white/30'}`}>{step.desc}</p>
-            </button>
+
+              {/* Card */}
+              <div className="w-full px-1.5">
+                <button
+                  onClick={() => setActive(i)}
+                  className={`w-full text-left p-4 rounded-xl border transition-all bento-hover card-shine ${
+                    i === active
+                      ? 'glass-card border-blue-400/30' :'glass border-white/10 hover:border-white/20'
+                  }`}
+                  style={{ transitionDelay: `${i * 80}ms` }}
+                >
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-2.5 ${i === active ? 'bg-blue-500/30 border border-blue-400/30' : 'bg-white/10'}`}>
+                    <step.icon size={15} className={i === active ? 'text-blue-300' : 'text-white/50'} />
+                  </div>
+                  <p className={`text-xs font-bold mb-1 ${i === active ? 'text-white' : 'text-white/60'}`}>{step.title}</p>
+                  <p className={`text-[11px] leading-relaxed ${i === active ? 'text-white/60' : 'text-white/30'}`}>{step.desc}</p>
+                </button>
+              </div>
+            </div>
           ))}
         </div>
       </div>
