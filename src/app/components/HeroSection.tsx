@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Search, MapPin, Stethoscope, Pill, FlaskConical, ChevronDown, Bell, CheckCircle2, Circle, Star } from 'lucide-react';
+import { Search, Stethoscope, Pill, FlaskConical, Bell, CheckCircle2, Circle, Star } from 'lucide-react';
+import LocationDropdown from '@/components/ui/LocationDropdown';
 
 const SERVICE_MODES = [
   {
@@ -223,21 +224,11 @@ export default function HeroSection() {
 
               {/* Inputs */}
               <div className="p-4 flex flex-col sm:flex-row gap-2">
-                <div className="relative flex-shrink-0">
-                  <MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400" />
-                  <select
-                    value={city}
-                    onChange={(e) => setCity(e?.target?.value)}
-                    className="pl-8 pr-7 py-2.5 rounded-xl border border-white/10 bg-white/5 text-sm font-medium text-white appearance-none cursor-pointer hover:border-white/20 transition-colors focus:outline-none focus:ring-1 focus:ring-blue-400/50"
-                  >
-                    {CITIES?.map((c) => (
-                      <option key={`city-opt-${c}`} value={c} className="bg-slate-900 text-white">
-                        {c}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown size={11} className="absolute right-2 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" />
-                </div>
+                <LocationDropdown
+                  defaultLabel="All Cities"
+                  variant="dark"
+                  onApply={(label) => setCity(label)}
+                />
 
                 <div className="flex-1 relative">
                   <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />

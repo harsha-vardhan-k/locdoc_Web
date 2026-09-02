@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Search, MapPin, SlidersHorizontal, X, ChevronDown, ShoppingCart, ChevronRight,  } from 'lucide-react';
+import LocationDropdown from '@/components/ui/LocationDropdown';
 import { PRODUCTS, MEDICINE_CATEGORIES, HEALTH_CONCERNS, lowestOffer } from '@/data/medicines';
 import ProductCard from '@/components/ui/ProductCard';
 import CategoryBar from './CategoryBar';
@@ -21,6 +22,7 @@ export default function MedicinesContent() {
   const { itemCount } = useCart();
   const [query, setQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCity, setSelectedCity] = useState('All Cities');
   const [nearMe, setNearMe] = useState(false);
   const [prescriptionOnly, setPrescriptionOnly] = useState(false);
   const [sortBy, setSortBy] = useState('relevance');
@@ -129,6 +131,11 @@ export default function MedicinesContent() {
           {/* Search — glassmorphism */}
           <div className="mt-8 glass-card rounded-2xl p-4">
             <div className="flex gap-3">
+              <LocationDropdown
+                defaultLabel="All Cities"
+                variant="dark"
+                onApply={(label) => setSelectedCity(label)}
+              />
               <div className="relative flex-1">
                 <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
                 <input
