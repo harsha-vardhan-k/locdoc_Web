@@ -100,7 +100,7 @@ function CustomSelect({ label, value, options, placeholder, onChange }: CustomSe
         </button>
 
         {open && options.length > 0 && (
-          <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-[60] max-h-44 overflow-y-auto">
+          <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-[210] max-h-44 overflow-y-auto">
             {options.map((opt) => (
               <button
                 key={opt}
@@ -220,7 +220,7 @@ export default function LocationDropdown({
 
       {open && (
         <div
-          className="absolute top-full left-0 mt-2 w-80 rounded-2xl shadow-2xl z-50 p-4 animate-fade-in"
+          className="absolute top-full left-0 mt-2 w-80 rounded-2xl shadow-2xl z-[200] p-4 animate-fade-in"
           style={{
             background: '#ffffff',
             border: '1px solid rgba(0,0,0,0.08)',
