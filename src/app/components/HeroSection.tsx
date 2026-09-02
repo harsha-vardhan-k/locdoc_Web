@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Search, MapPin, Stethoscope, Pill, FlaskConical, ChevronDown, CheckCircle2, AlertTriangle, Star } from 'lucide-react';
+import { Search, MapPin, Stethoscope, Pill, FlaskConical, ChevronDown, Bell, CheckCircle2, Circle, Star } from 'lucide-react';
 
 const SERVICE_MODES = [
   {
@@ -42,10 +42,79 @@ const SERVICE_MODES = [
 
 const CITIES = ['Hyderabad', 'Bengaluru', 'Mumbai'];
 
-const FLOATING_EVENTS = [
-  { icon: CheckCircle2, color: 'text-emerald-400', bg: 'bg-emerald-500/15', label: 'Dr. Priya Venkataraman', sub: 'Cardiologist · On time', time: '2m ago' },
-  { icon: AlertTriangle, color: 'text-amber-400', bg: 'bg-amber-500/15', label: 'Dr. Kiran Reddy', sub: 'Running 15 min late · Notified', time: '5m ago' },
-  { icon: Star, color: 'text-yellow-400', bg: 'bg-yellow-500/15', label: '4.9 rating', sub: 'Dr. Sunita Rao · Gynaecologist', time: 'Just now' },
+const TRACKING_CARDS = [
+  {
+    id: 'appointment',
+    label: "TODAY\'S APPOINTMENT",
+    icon: (
+      <div className="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-black text-blue-300" style={{ background: 'rgba(59,130,246,0.18)' }}>
+        DR
+      </div>
+    ),
+    title: 'Dr. DOC',
+    subtitle: 'Cardiologist · Hospital',
+    statusBg: 'rgba(59,130,246,0.13)',
+    statusBorder: 'rgba(59,130,246,0.25)',
+    statusTitle: 'In Transit',
+    statusDesc: 'ETA 12 min · originally 4:30 PM',
+    eta: '12 MIN',
+    steps: [
+      { label: 'Confirmed by you', time: '4:02 PM', done: true },
+      { label: 'Doctor marked In Transit', time: '4:18 PM', done: true },
+      { label: 'Delay detected — 12 min', time: '4:21 PM', done: true },
+      { label: 'New expected time', time: '4:42 PM', done: false },
+    ],
+    btn1: 'Accept new time',
+    btn2: 'Reschedule',
+  },
+  {
+    id: 'labtest',
+    label: 'YOUR LAB TEST',
+    icon: (
+      <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(99,102,241,0.18)' }}>
+        <FlaskConical size={18} className="text-indigo-300" />
+      </div>
+    ),
+    title: 'Diagnostics',
+    subtitle: 'Complete Blood Count (CBC)',
+    statusBg: 'rgba(99,102,241,0.13)',
+    statusBorder: 'rgba(99,102,241,0.25)',
+    statusTitle: 'Sample collected',
+    statusDesc: 'Report expected by 6:00 PM today',
+    eta: '12 MIN',
+    steps: [
+      { label: 'Test booked', time: '8:00 AM', done: true },
+      { label: 'Technician assigned', time: '8:30 AM', done: true },
+      { label: 'Sample collected', time: '9:15 AM', done: true },
+      { label: 'Report processing', time: '9:20 AM', done: false },
+    ],
+    btn1: 'Track report',
+    btn2: 'Reschedule visit',
+  },
+  {
+    id: 'medicine',
+    label: 'YOUR MEDICINE ORDER',
+    icon: (
+      <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(6,182,212,0.18)' }}>
+        <Pill size={18} className="text-cyan-300" />
+      </div>
+    ),
+    title: 'Pharmacy',
+    subtitle: 'Paracetamol 650mg · Strip of 15',
+    statusBg: 'rgba(6,182,212,0.13)',
+    statusBorder: 'rgba(6,182,212,0.25)',
+    statusTitle: 'Ready for pickup',
+    statusDesc: 'Hold expires in 3 hrs · ₹32',
+    eta: '12 MIN',
+    steps: [
+      { label: 'Order placed', time: '2:10 PM', done: true },
+      { label: 'Pharmacy accepted', time: '2:14 PM', done: true },
+      { label: 'Stock reserved', time: '2:14 PM', done: true },
+      { label: 'Ready for pickup', time: '2:20 PM', done: false },
+    ],
+    btn1: 'Get directions',
+    btn2: 'Cancel hold',
+  },
 ];
 
 export default function HeroSection() {
@@ -59,8 +128,8 @@ export default function HeroSection() {
   useEffect(() => {
     setMounted(true);
     const interval = setInterval(() => {
-      setActiveCard((i) => (i + 1) % FLOATING_EVENTS?.length);
-    }, 3000);
+      setActiveCard((i) => (i + 1) % TRACKING_CARDS?.length);
+    }, 3200);
     return () => clearInterval(interval);
   }, []);
 
@@ -143,7 +212,7 @@ export default function HeroSection() {
                     onClick={() => setActiveMode(i)}
                     className={`flex-1 flex items-center justify-center gap-1.5 py-3 text-xs font-semibold transition-all duration-200 ${
                       activeMode === i
-                        ? 'bg-white/10 text-white border-b-2 border-blue-400' :'text-white/40 hover:text-white/70 hover:bg-white/5'
+                        ? 'bg-white/10 text-white border-b-2 border-blue-400' : 'text-white/40 hover:text-white/70 hover:bg-white/5'
                     }`}
                   >
                     <m.icon size={14} />
@@ -213,79 +282,149 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* RIGHT — Floating stat cards */}
-          <div className={`hidden lg:flex flex-col gap-5 relative ${mounted ? 'animate-slide-in-right' : 'opacity-0'}`}>
-            {/* Big stat card */}
-            <div className="glass-card rounded-3xl p-7 animate-float">
-              <div className="flex items-start justify-between mb-5">
+          {/* RIGHT — Tracking Cards Carousel */}
+          <div className={`hidden lg:flex flex-col items-center justify-center relative ${mounted ? 'animate-slide-in-right' : 'opacity-0'}`}>
+            {/* Carousel viewport */}
+            <div className="relative w-full" style={{ maxWidth: 380 }}>
+              {/* SMS alert badge — floats top-left */}
+              <div
+                className="absolute -top-5 -left-4 z-20 flex items-center gap-2.5 px-4 py-2.5 rounded-2xl shadow-xl"
+                style={{ background: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(12px)' }}
+              >
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(99,102,241,0.12)' }}>
+                  <Bell size={14} className="text-indigo-500" />
+                </div>
                 <div>
-                  <p className="text-white/40 text-xs font-semibold uppercase tracking-widest mb-2">Platform stats</p>
-                  <p className="stat-number text-white">2,400<span className="text-blue-400">+</span></p>
-                  <p className="text-white/60 text-sm mt-1">NMC Verified Doctors</p>
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/25">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-live-pulse" />
-                  <span className="text-emerald-300 text-xs font-semibold">Live</span>
+                  <p className="text-[12px] font-bold text-gray-800 leading-none">SMS alert sent</p>
+                  <p className="text-[10px] text-gray-400 mt-0.5">Delay notified in 41s</p>
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-4 pt-5 border-t border-white/8">
-                {[
-                  { val: '94%', label: 'On-time rate' },
-                  { val: '3', label: 'Cities' },
-                  { val: '48h', label: 'Verification' },
-                ]?.map((s) => (
-                  <div key={s?.label}>
-                    <p className="text-2xl font-black text-white leading-none tracking-tight">{s?.val}</p>
-                    <p className="text-white/40 text-[11px] mt-1">{s?.label}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Live activity feed card */}
-            <div className="glass-card rounded-2xl overflow-hidden animate-float-delayed">
-              <div className="flex items-center justify-between px-5 py-3 border-b border-white/8">
-                <div className="flex items-center gap-2">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-pulse-ring absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
-                  </span>
-                  <span className="text-xs font-semibold text-white/70">Live Queue Monitor</span>
+              {/* Punctuality badge — floats bottom-right */}
+              <div
+                className="absolute -bottom-5 -right-4 z-20 flex items-center gap-2.5 px-4 py-2.5 rounded-2xl shadow-xl"
+                style={{ background: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(12px)' }}
+              >
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(234,179,8,0.12)' }}>
+                  <Star size={13} className="text-yellow-500 fill-yellow-400" />
                 </div>
-                <span className="text-[10px] text-white/30">Simulated</span>
+                <div>
+                  <p className="text-[12px] font-bold text-gray-800 leading-none">4.9 average</p>
+                  <p className="text-[10px] text-gray-400 mt-0.5">Punctuality rating</p>
+                </div>
               </div>
-              <div className="divide-y divide-white/5">
-                {FLOATING_EVENTS?.map((ev, i) => (
-                  <div
-                    key={`fev-${i}`}
-                    className={`flex items-center gap-3 px-5 py-3 transition-all duration-500 ${
-                      activeCard === i ? 'bg-white/8' : 'opacity-60'
-                    }`}
-                  >
-                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${ev?.bg}`}>
-                      <ev.icon size={14} className={ev?.color} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-semibold text-white truncate">{ev?.label}</p>
-                      <p className="text-[11px] text-white/40 truncate">{ev?.sub}</p>
-                    </div>
-                    <span className="text-[10px] text-white/30 flex-shrink-0">{ev?.time}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Bottom row — two small cards */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="glass-card rounded-2xl p-5 animate-float">
-                <p className="text-white/40 text-[11px] uppercase tracking-widest mb-2">Ghosting reduction</p>
-                <p className="text-4xl font-black text-white leading-none tracking-tight">82<span className="text-cyan-400">%</span></p>
-                <p className="text-white/40 text-xs mt-2">Doctors who actually show up</p>
+              {/* Cards slider */}
+              <div className="overflow-hidden rounded-3xl" style={{ marginTop: 16, marginBottom: 16 }}>
+                <div
+                  className="flex transition-transform duration-700 ease-in-out"
+                  style={{ transform: `translateX(-${activeCard * 100}%)` }}
+                >
+                  {TRACKING_CARDS?.map((card) => (
+                    <div
+                      key={card?.id}
+                      className="flex-shrink-0 w-full"
+                      style={{ minWidth: '100%' }}
+                    >
+                      <div
+                        className="rounded-3xl p-6"
+                        style={{
+                          background: 'rgba(255,255,255,0.06)',
+                          border: '1px solid rgba(255,255,255,0.12)',
+                          backdropFilter: 'blur(20px)',
+                        }}
+                      >
+                        {/* Card header */}
+                        <div className="flex items-center justify-between mb-4">
+                          <p className="text-[10px] font-bold tracking-widest text-white/40 uppercase">{card?.label}</p>
+                          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full" style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.25)' }}>
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-live-pulse" />
+                            <span className="text-emerald-300 text-[10px] font-bold">Live</span>
+                          </div>
+                        </div>
+
+                        {/* Provider row */}
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="flex items-center gap-3">
+                            {card?.icon}
+                            <div>
+                              <p className="text-sm font-bold text-white">{card?.title}</p>
+                              <p className="text-[11px] text-white/45">{card?.subtitle}</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full" style={{ background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.3)' }}>
+                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
+                            <span className="text-indigo-300 text-[10px] font-bold">Verified</span>
+                          </div>
+                        </div>
+
+                        {/* Status banner */}
+                        <div
+                          className="flex items-center justify-between rounded-2xl px-4 py-3 mb-4"
+                          style={{ background: card?.statusBg, border: `1px solid ${card?.statusBorder}` }}
+                        >
+                          <div>
+                            <p className="text-sm font-black text-white">{card?.statusTitle}</p>
+                            <p className="text-[11px] text-white/50 mt-0.5">{card?.statusDesc}</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-[9px] font-bold text-white/40 uppercase tracking-wider">ETA</p>
+                            <p className="text-xl font-black text-blue-300 leading-none">{card?.eta}</p>
+                          </div>
+                        </div>
+
+                        {/* Timeline steps */}
+                        <div className="flex flex-col gap-2.5 mb-5">
+                          {card?.steps?.map((step, si) => (
+                            <div key={`step-${si}`} className="flex items-start gap-3">
+                              {step?.done ? (
+                                <CheckCircle2 size={14} className="text-blue-400 mt-0.5 flex-shrink-0" />
+                              ) : (
+                                <Circle size={14} className="text-white/25 mt-0.5 flex-shrink-0" />
+                              )}
+                              <div>
+                                <p className={`text-xs font-semibold ${step?.done ? 'text-white/80' : 'text-white/50'}`}>{step?.label}</p>
+                                <p className="text-[10px] text-white/35">{step?.time}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Action buttons */}
+                        <div className="flex gap-3">
+                          <button
+                            className="flex-1 py-2.5 rounded-full text-xs font-bold text-white transition-all hover:opacity-90"
+                            style={{ background: 'linear-gradient(135deg, #3b5bdb, #2563eb)' }}
+                          >
+                            {card?.btn1}
+                          </button>
+                          <button
+                            className="flex-1 py-2.5 rounded-full text-xs font-bold text-white/70 border border-white/15 hover:border-white/30 hover:text-white transition-all"
+                            style={{ background: 'rgba(255,255,255,0.05)' }}
+                          >
+                            {card?.btn2}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="glass-card rounded-2xl p-5 animate-float-delayed">
-                <p className="text-white/40 text-[11px] uppercase tracking-widest mb-2">Patients served</p>
-                <p className="text-4xl font-black text-white leading-none tracking-tight">18k<span className="text-purple-400">+</span></p>
-                <p className="text-white/40 text-xs mt-2">Across pilot cities</p>
+
+              {/* Dot indicators */}
+              <div className="flex justify-center gap-2 mt-2">
+                {TRACKING_CARDS?.map((_, i) => (
+                  <button
+                    key={`dot-${i}`}
+                    onClick={() => setActiveCard(i)}
+                    className="rounded-full transition-all duration-300"
+                    style={{
+                      width: activeCard === i ? 20 : 6,
+                      height: 6,
+                      background: activeCard === i ? '#3b82f6' : 'rgba(255,255,255,0.2)',
+                    }}
+                  />
+                ))}
               </div>
             </div>
           </div>
