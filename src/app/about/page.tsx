@@ -189,7 +189,7 @@ function HowItWorks() {
 
       <div className="relative max-w-4xl mx-auto px-6">
         {/* Timeline + Cards in a single aligned row */}
-        <div className="flex items-start gap-0 reveal-up">
+        <div className="flex items-stretch gap-0 reveal-up">
           {HOW_STEPS.map((step, i) => (
             <div key={step.title} className="flex-1 flex flex-col items-center">
               {/* Step number + dot */}
@@ -213,20 +213,20 @@ function HowItWorks() {
               </div>
 
               {/* Card */}
-              <div className="w-full px-1.5">
+              <div className="w-full px-1.5 flex flex-1">
                 <button
                   onClick={() => setActive(i)}
-                  className={`w-full text-left p-4 rounded-xl border transition-all bento-hover card-shine ${
+                  className={`w-full text-left p-4 rounded-xl border transition-all bento-hover card-shine flex flex-col ${
                     i === active
                       ? 'glass-card border-blue-400/30' :'glass border-white/10 hover:border-white/20'
                   }`}
-                  style={{ transitionDelay: `${i * 80}ms` }}
+                  style={{ transitionDelay: `${i * 80}ms`, minHeight: '140px' }}
                 >
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-2.5 ${i === active ? 'bg-blue-500/30 border border-blue-400/30' : 'bg-white/10'}`}>
-                    <step.icon size={15} className={i === active ? 'text-blue-300' : 'text-white/50'} />
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-2.5 flex-shrink-0 ${i === active ? 'bg-blue-500/30 border border-blue-400/30' : 'bg-white/10'}`}>
+                    <step.icon size={15} className={i === active ? 'text-blue-300' : 'text-white/60'} />
                   </div>
-                  <p className={`text-xs font-bold mb-1 ${i === active ? 'text-white' : 'text-white/60'}`}>{step.title}</p>
-                  <p className={`text-[11px] leading-relaxed ${i === active ? 'text-white/60' : 'text-white/30'}`}>{step.desc}</p>
+                  <p className={`text-xs font-bold mb-1 ${i === active ? 'text-white' : 'text-white/80'}`}>{step.title}</p>
+                  <p className={`text-[11px] leading-relaxed ${i === active ? 'text-white/70' : 'text-white/55'}`}>{step.desc}</p>
                 </button>
               </div>
             </div>
