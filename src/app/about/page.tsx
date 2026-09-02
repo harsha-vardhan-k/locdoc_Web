@@ -126,16 +126,16 @@ function LocDocEngine() {
 
       {/* Flow steps */}
       <div className="max-w-5xl mx-auto px-6">
-        <div className="bg-card rounded-3xl p-8 shadow-md border border-border reveal-scale">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-6 md:gap-0">
+        <div className="bg-card rounded-2xl p-5 shadow-md border border-border reveal-scale">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-0">
             {ENGINE_STEPS.map((step, i) => (
               <React.Fragment key={step.title}>
                 <div className="flex-1 flex flex-col items-center text-center px-2 micro-lift">
-                  <div className="w-10 h-10 rounded-xl bg-primary-soft border border-primary/20 flex items-center justify-center mb-3">
-                    <step.icon size={18} className="text-primary" />
+                  <div className="w-8 h-8 rounded-lg bg-primary-soft border border-primary/20 flex items-center justify-center mb-2">
+                    <step.icon size={15} className="text-primary" />
                   </div>
-                  <p className="text-sm font-bold text-foreground mb-1">{step.title}</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{step.desc}</p>
+                  <p className="text-xs font-bold text-foreground mb-0.5">{step.title}</p>
+                  <p className="text-[11px] text-muted-foreground leading-relaxed">{step.desc}</p>
                 </div>
                 {i < ENGINE_STEPS.length - 1 && (
                   <div className="hidden md:flex items-center text-muted-foreground text-lg font-light px-1">›</div>
@@ -147,12 +147,12 @@ function LocDocEngine() {
       </div>
 
       {/* Stats bento grid */}
-      <div className="max-w-5xl mx-auto px-6 mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+      <div className="max-w-5xl mx-auto px-6 mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
         {ENGINE_STATS.map((s, i) => (
-          <div key={s.label} className="reveal-up glass-light rounded-2xl p-4 micro-lift glow-border-hover" style={{ transitionDelay: `${i * 60}ms` }}>
-            <p className="text-xl font-black text-primary mb-1 font-tabular">{s.value}</p>
-            <p className="text-xs font-bold text-foreground mb-1">{s.label}</p>
-            <p className="text-[11px] text-muted-foreground leading-snug">{s.desc}</p>
+          <div key={s.label} className="reveal-up glass-light rounded-xl p-3 micro-lift glow-border-hover" style={{ transitionDelay: `${i * 60}ms` }}>
+            <p className="text-lg font-black text-primary mb-0.5 font-tabular">{s.value}</p>
+            <p className="text-[11px] font-bold text-foreground mb-0.5">{s.label}</p>
+            <p className="text-[10px] text-muted-foreground leading-snug">{s.desc}</p>
           </div>
         ))}
       </div>
@@ -202,19 +202,19 @@ function HowItWorks() {
           ))}
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {HOW_STEPS.map((step, i) => (
             <button
               key={step.title}
               onClick={() => setActive(i)}
-              className={`text-left p-5 rounded-2xl border transition-all reveal-up bento-hover card-shine ${i === active ? 'glass-card border-blue-400/30' : 'glass border-white/10 hover:border-white/20'}`}
+              className={`text-left p-4 rounded-xl border transition-all reveal-up bento-hover card-shine ${i === active ? 'glass-card border-blue-400/30' : 'glass border-white/10 hover:border-white/20'}`}
               style={{ transitionDelay: `${i * 80}ms` }}
             >
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${i === active ? 'bg-blue-500/30 border border-blue-400/30' : 'bg-white/10'}`}>
-                <step.icon size={18} className={i === active ? 'text-blue-300' : 'text-white/50'} />
+              <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-2.5 ${i === active ? 'bg-blue-500/30 border border-blue-400/30' : 'bg-white/10'}`}>
+                <step.icon size={15} className={i === active ? 'text-blue-300' : 'text-white/50'} />
               </div>
-              <p className={`text-sm font-bold mb-1 ${i === active ? 'text-white' : 'text-white/60'}`}>{step.title}</p>
-              <p className={`text-xs leading-relaxed ${i === active ? 'text-white/60' : 'text-white/30'}`}>{step.desc}</p>
+              <p className={`text-xs font-bold mb-1 ${i === active ? 'text-white' : 'text-white/60'}`}>{step.title}</p>
+              <p className={`text-[11px] leading-relaxed ${i === active ? 'text-white/60' : 'text-white/30'}`}>{step.desc}</p>
             </button>
           ))}
         </div>
@@ -252,14 +252,14 @@ function ByTheNumbers() {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {METRICS?.map((m, i) => (
-            <div key={`metric-${m?.label}`} className={`reveal-up glass-light rounded-xl p-5 flex flex-col gap-3 micro-lift glow-border-hover card-shine ${m?.span}`} style={{ transitionDelay: `${i * 60}ms` }}>
-              <div className={`w-9 h-9 rounded-lg flex items-center justify-center border ${m?.bg} ${m?.border}`}>
-                <m.icon size={17} className={m?.color} />
+            <div key={`metric-${m?.label}`} className={`reveal-up glass-light rounded-xl p-4 flex flex-col gap-2 micro-lift glow-border-hover card-shine ${m?.span}`} style={{ transitionDelay: `${i * 60}ms` }}>
+              <div className={`w-8 h-8 rounded-lg flex items-center justify-center border ${m?.bg} ${m?.border}`}>
+                <m.icon size={15} className={m?.color} />
               </div>
               <div>
-                <p className={`display-stat leading-none mb-2 ${m?.color}`}>{m?.value}</p>
-                <p className="text-sm font-bold text-foreground mb-1">{m?.label}</p>
-                <p className="text-xs text-muted-foreground leading-snug">{m?.description}</p>
+                <p className={`text-2xl font-black leading-none mb-1 font-tabular ${m?.color}`}>{m?.value}</p>
+                <p className="text-xs font-bold text-foreground mb-0.5">{m?.label}</p>
+                <p className="text-[11px] text-muted-foreground leading-snug">{m?.description}</p>
               </div>
             </div>
           ))}
@@ -301,14 +301,14 @@ function Principles() {
           </span>
         </h2>
       </div>
-      <div className="relative max-w-5xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="relative max-w-5xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {PRINCIPLES.map((p, i) => (
-          <div key={p.title} className="reveal-up glass-card rounded-2xl p-6 bento-hover card-shine" style={{ transitionDelay: `${i * 80}ms` }}>
-            <div className="w-9 h-9 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center mb-4">
-              <p.icon size={17} className="text-blue-400" />
+          <div key={p.title} className="reveal-up glass-card rounded-xl p-4 bento-hover card-shine" style={{ transitionDelay: `${i * 80}ms` }}>
+            <div className="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-500/30 flex items-center justify-center mb-3">
+              <p.icon size={15} className="text-blue-400" />
             </div>
-            <p className="text-sm font-bold text-white mb-2">{p.title}</p>
-            <p className="text-xs text-white/40 leading-relaxed">{p.desc}</p>
+            <p className="text-xs font-bold text-white mb-1.5">{p.title}</p>
+            <p className="text-[11px] text-white/40 leading-relaxed">{p.desc}</p>
           </div>
         ))}
       </div>
@@ -338,15 +338,15 @@ function Team() {
           <span className="text-gradient-brand">that showed up on time.</span>
         </h2>
       </div>
-      <div className="max-w-4xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="max-w-4xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {TEAM.map((member, i) => (
-          <div key={member.name} className="reveal-up glass-light rounded-2xl p-6 text-center micro-lift glow-border-hover card-shine" style={{ transitionDelay: `${i * 80}ms` }}>
-            <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'linear-gradient(135deg, #2563eb, #0891b2)' }}>
-              <span className="text-white font-bold text-sm">{member.initials}</span>
+          <div key={member.name} className="reveal-up glass-light rounded-xl p-4 text-center micro-lift glow-border-hover card-shine" style={{ transitionDelay: `${i * 80}ms` }}>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-3" style={{ background: 'linear-gradient(135deg, #2563eb, #0891b2)' }}>
+              <span className="text-white font-bold text-xs">{member.initials}</span>
             </div>
-            <p className="text-sm font-bold text-foreground">{member.name}</p>
-            <p className="text-xs text-primary font-semibold mb-2">{member.role}</p>
-            <p className="text-xs text-muted-foreground leading-relaxed">{member.desc}</p>
+            <p className="text-xs font-bold text-foreground">{member.name}</p>
+            <p className="text-[11px] text-primary font-semibold mb-1.5">{member.role}</p>
+            <p className="text-[11px] text-muted-foreground leading-relaxed">{member.desc}</p>
           </div>
         ))}
       </div>
