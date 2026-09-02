@@ -121,18 +121,23 @@ function ConfirmedScreen({
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-2xl mx-auto px-4 py-12">
-        {/* Success header */}
-        <div className="text-center mb-8">
-          <div className="w-20 h-20 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-4">
-            <CheckCircle2 size={40} className="text-success" />
+      {/* Dark hero header */}
+      <div className="page-hero-dark py-10">
+        <div className="absolute inset-0 grid-overlay pointer-events-none" />
+        <div className="relative max-w-2xl mx-auto px-4">
+          <div className="text-center">
+            <div className="w-20 h-20 rounded-full glass border border-emerald-500/30 flex items-center justify-center mx-auto mb-4">
+              <CheckCircle2 size={40} className="text-emerald-400" />
+            </div>
+            <h1 className="tight-headline text-white mb-2">Booking Confirmed!</h1>
+            <p className="text-sm text-white/50">
+              Your {checkoutType === 'lab' ? 'lab tests have been booked' : 'appointment is confirmed'}. All details sent to your contact.
+            </p>
           </div>
-          <h1 className="text-2xl font-extrabold text-foreground mb-2">Booking Confirmed!</h1>
-          <p className="text-sm text-muted-foreground">
-            Your {checkoutType === 'lab' ? 'lab tests have been booked' : 'appointment is confirmed'}. All details sent to your contact.
-          </p>
         </div>
+      </div>
 
+      <div className="max-w-2xl mx-auto px-4 py-8">
         {/* Booking Reference Card */}
         <div className="bg-primary-soft border border-primary/20 rounded-2xl p-5 mb-5">
           <div className="flex items-center justify-between mb-3">

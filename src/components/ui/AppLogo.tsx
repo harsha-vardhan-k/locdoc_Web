@@ -40,16 +40,47 @@ const AppLogo = memo(function AppLogo({
         aria-hidden="true"
         style={{ flexShrink: 0 }}
       >
-        {/* Background pill */}
+        {/* Background rounded square */}
         <rect width="40" height="40" rx="11" fill={isWhite ? 'rgba(255,255,255,0.15)' : 'url(#logoGrad)'} />
 
-        {/* Cross / plus mark — medical symbol */}
-        <rect x="17.5" y="10" width="5" height="20" rx="2.5" fill="white" />
-        <rect x="10" y="17.5" width="20" height="5" rx="2.5" fill="white" />
+        {/* Stethoscope design */}
+        {/* Chest piece — circle at bottom left */}
+        <circle
+          cx="13"
+          cy="27"
+          r="4"
+          fill="none"
+          stroke="white"
+          strokeWidth="2"
+          strokeOpacity={isWhite ? 0.9 : 1}
+        />
+        {/* Inner dot of chest piece */}
+        <circle cx="13" cy="27" r="1.5" fill="white" fillOpacity={isWhite ? 0.7 : 0.9} />
 
-        {/* Small location pin dot at bottom-right */}
-        <circle cx="29" cy="29" r="4" fill={isWhite ? 'rgba(255,255,255,0.9)' : '#0891B2'} />
-        <circle cx="29" cy="29" r="2" fill="white" />
+        {/* Tube: from chest piece up and curving to earpiece */}
+        {/* Vertical segment up from chest piece */}
+        <path
+          d="M13 23 L13 17 Q13 13 17 13 L23 13 Q27 13 27 17 L27 20"
+          stroke="white"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+          strokeOpacity={isWhite ? 0.9 : 1}
+        />
+
+        {/* Earpiece — small circle at top right end */}
+        <circle
+          cx="27"
+          cy="21"
+          r="2.5"
+          fill="white"
+          fillOpacity={isWhite ? 0.85 : 1}
+        />
+
+        {/* Medical cross — small, top-right area of icon */}
+        <rect x="29" y="7" width="2" height="6" rx="1" fill="white" fillOpacity={isWhite ? 0.6 : 0.85} />
+        <rect x="27" y="9" width="6" height="2" rx="1" fill="white" fillOpacity={isWhite ? 0.6 : 0.85} />
 
         <defs>
           <linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">

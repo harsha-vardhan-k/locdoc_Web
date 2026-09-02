@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Building2, UserRound, FlaskConical, Pill, ArrowRight } from 'lucide-react';
+import { Building2, UserRound, FlaskConical, Pill, ArrowRight, Zap } from 'lucide-react';
 
 const REGISTER_OPTIONS = [
   {
@@ -60,7 +60,7 @@ export default function RegisterBusinessCTA() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          el.querySelectorAll('.reveal-up').forEach((node, i) => {
+          el.querySelectorAll('.reveal-up, .reveal-scale').forEach((node, i) => {
             setTimeout(() => node.classList.add('visible'), i * 80);
           });
         }
@@ -72,44 +72,44 @@ export default function RegisterBusinessCTA() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-12 bg-white" id="register">
+    <section ref={sectionRef} className="section-light py-16" id="register">
       <div className="max-w-screen-2xl mx-auto px-4 lg:px-8 xl:px-10">
         {/* Header */}
         <div className="text-center mb-10 reveal-up">
-          <span className="inline-block text-xs font-bold tracking-widest uppercase mb-3 px-3 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-100">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-xs font-medium text-blue-600 mb-4">
+            <Zap size={11} className="text-blue-500" />
             For healthcare providers
           </span>
-          <h2 className="section-headline text-gray-950 mb-4">
+          <h2 className="tight-headline text-foreground mb-4">
             Join the LocDoc<br />
-            <span style={{ background: 'linear-gradient(135deg, #2563eb, #0891b2)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-              network.
-            </span>
+            <span className="text-gradient-brand">network.</span>
           </h2>
-          <p className="text-base text-gray-500 max-w-md mx-auto">
+          <p className="text-base text-muted-foreground max-w-md mx-auto">
             Get verified, go live, and eliminate appointment ghosting for your patients — in under 48 hours.
           </p>
         </div>
 
         {/* Bento register cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 max-w-5xl mx-auto mb-8">
-          {REGISTER_OPTIONS?.map((opt) => (
+          {REGISTER_OPTIONS?.map((opt, i) => (
             <Link
               key={`reg-${opt?.id}`}
               href={opt?.href}
-              className={`reveal-up group rounded-xl border bg-gradient-to-br ${opt?.gradient} ${opt?.border} p-4 flex flex-col gap-3 bento-hover transition-all duration-300 hover:shadow-xl`}
+              className={`reveal-up group rounded-2xl border bg-gradient-to-br ${opt?.gradient} ${opt?.border} p-5 flex flex-col gap-3 micro-lift glow-border-hover card-shine transition-all duration-300`}
+              style={{ transitionDelay: `${i * 80}ms` }}
             >
-              <div className={`w-10 h-10 rounded-lg flex items-center justify-center border ${opt?.bg} ${opt?.border}`}>
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center border ${opt?.bg} ${opt?.border}`}>
                 <opt.icon size={18} className={opt?.color} />
               </div>
               <div className="flex-1">
-                <p className="text-sm font-bold text-gray-900 group-hover:text-blue-700 transition-colors mb-1.5">
+                <p className="text-sm font-bold text-foreground group-hover:text-primary transition-colors mb-1.5">
                   {opt?.label}
                 </p>
-                <p className="text-xs text-gray-500 leading-relaxed">
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   {opt?.description}
                 </p>
               </div>
-              <div className={`flex items-center gap-1.5 text-xs font-bold ${opt?.color} group`}>
+              <div className={`flex items-center gap-1.5 text-xs font-bold ${opt?.color}`}>
                 Register now
                 <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
               </div>
@@ -117,22 +117,23 @@ export default function RegisterBusinessCTA() {
           ))}
         </div>
 
-        {/* Bottom CTA strip */}
+        {/* Bottom CTA strip — dark */}
         <div
-          className="reveal-up rounded-xl p-6 text-center relative overflow-hidden"
+          className="reveal-scale rounded-2xl p-8 text-center relative overflow-hidden"
           style={{ background: 'linear-gradient(135deg, #0a0f1e 0%, #0d1a3a 100%)' }}
         >
+          <div className="absolute inset-0 grid-overlay pointer-events-none" />
           <div
             className="absolute inset-0 opacity-20 pointer-events-none"
             style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(37,99,235,0.6) 0%, transparent 70%)' }}
           />
-          <p className="relative text-white/50 text-sm mb-2">Already registered?</p>
+          <p className="relative text-white/40 text-sm mb-2">Already registered?</p>
           <Link
             href="/login?role=hospital"
-            className="relative inline-flex items-center gap-2 text-base font-bold text-white hover:text-blue-300 transition-colors group"
+            className="relative inline-flex items-center gap-2 text-lg font-bold text-white hover:text-blue-300 transition-colors group"
           >
             Sign in to your facility account
-            <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
       </div>

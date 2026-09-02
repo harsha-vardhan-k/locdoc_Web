@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import AppLayout from '@/components/AppLayout';
-import { FlaskConical, Search, Home, CheckCircle2, Clock, ChevronDown, X, ShoppingCart, Package, Zap, Shield, Truck } from 'lucide-react';
+import { Search, Home, CheckCircle2, Clock, ChevronDown, X, ShoppingCart, Package, Zap, Shield, Truck } from 'lucide-react';
 import { LAB_TESTS, LAB_PACKAGES, LAB_CATEGORIES, LabTest, LabPackage } from '@/data/lab-tests';
 import Link from 'next/link';
 
@@ -18,6 +18,29 @@ export default function LabTestsPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [showCart, setShowCart] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const packagesRef = useRef<HTMLElement>(null);
+  const testsRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+    const refs = [packagesRef, testsRef];
+    refs.forEach((r) => {
+      const el = r?.current;
+      if (!el) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            el.querySelectorAll('.reveal-up, .reveal-scale').forEach((node, i) => {
+              setTimeout(() => node.classList.add('visible'), i * 60);
+            });
+          }
+        },
+        { threshold: 0.05 }
+      );
+      observer.observe(el);
+    });
+  }, []);
 
   const addToCart = (item: LabTest | LabPackage, type: 'test' | 'package') => {
     if (cartItems.find((c) => c.id === item.id)) return;
@@ -29,7 +52,6 @@ export default function LabTestsPage() {
   };
 
   const isInCart = (id: string) => cartItems.some((c) => c.id === id);
-
   const totalPrice = cartItems.reduce((sum, c) => sum + c.price, 0);
 
   const filteredTests = useMemo(() => {
@@ -53,28 +75,57 @@ export default function LabTestsPage() {
   return (
     <AppLayout>
       <div className="min-h-screen bg-background">
-        {/* Hero */}
-        <div className="gradient-hero border-b border-border py-10">
-          <div className="max-w-screen-2xl mx-auto px-4 lg:px-8 xl:px-10">
-            <div className="max-w-2xl">
-              <p className="text-xs font-semibold text-primary uppercase tracking-widest mb-2">
-                NABL Accredited Labs
-              </p>
-              <h1 className="text-3xl font-extrabold text-foreground mb-2">Book Lab Tests</h1>
-              <p className="text-sm text-muted-foreground mb-6">
-                Compare prices across certified labs near you. Home collection available. Reports in your inbox.
-              </p>
-              <div className="relative max-w-lg">
-                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+        {/* Dark navy glassmorphism hero */}
+        <div className="page-hero-dark py-14">
+          <div className="absolute inset-0 grid-overlay pointer-events-none" />
+          <div className={`relative max-w-screen-2xl mx-auto px-4 lg:px-8 xl:px-10 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+            {/* Eyebrow */}
+            <div className="inline-flex items-center gap-2.5 mb-5 px-4 py-2 rounded-full glass border border-white/10 text-xs font-semibold text-purple-300">
+              <span className="w-2 h-2 rounded-full bg-purple-400 animate-live-pulse" />
+              NABL Accredited Labs · Home Collection
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-10 items-end">
+              <div>
+                <h1 className="page-headline text-white mb-4">
+                  Book lab tests<br />
+                  <span style={{ background: 'linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #22d3ee 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                    near you.
+                  </span>
+                </h1>
+                <p className="text-lg text-white/50 leading-relaxed max-w-md">
+                  Compare prices across certified labs. Home collection available. Reports in your inbox.
+                </p>
+              </div>
+
+              {/* Trust stats */}
+              <div className="flex gap-3 lg:justify-end flex-wrap">
+                {[
+                  { val: 'NABL', label: 'Accredited', color: 'text-purple-400' },
+                  { val: 'Free', label: 'Home Collection', color: 'text-cyan-400' },
+                  { val: '4–24h', label: 'Report Time', color: 'text-emerald-400' },
+                ].map((s) => (
+                  <div key={s.label} className="glass-card rounded-2xl px-4 py-3 text-center bento-hover card-shine">
+                    <p className={`text-xl font-black leading-none ${s.color}`}>{s.val}</p>
+                    <p className="text-white/40 text-[10px] mt-1 font-medium">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Search — glassmorphism */}
+            <div className="mt-8 glass-card rounded-2xl p-4">
+              <div className="relative max-w-2xl">
+                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
                 <input
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search tests, e.g. CBC, thyroid, diabetes…"
-                  className="w-full pl-10 pr-10 py-3 rounded-xl border border-border bg-card text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors shadow-xs"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-white/10 bg-white/5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-purple-400/50 focus:border-purple-400/30 transition-colors"
                 />
                 {query && (
-                  <button onClick={() => setQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+                  <button onClick={() => setQuery('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white">
                     <X size={14} />
                   </button>
                 )}
@@ -83,8 +134,8 @@ export default function LabTestsPage() {
           </div>
         </div>
 
-        {/* Trust strip */}
-        <div className="bg-card border-b border-border">
+        {/* Trust strip — white section */}
+        <div className="section-light border-b border-border">
           <div className="max-w-screen-2xl mx-auto px-4 lg:px-8 xl:px-10 py-3">
             <div className="flex flex-wrap items-center gap-6 text-xs text-muted-foreground">
               {[
@@ -94,7 +145,7 @@ export default function LabTestsPage() {
                 { icon: CheckCircle2, text: 'ICMR Approved Tests' },
                 { icon: Zap, text: 'Instant Booking' },
               ].map((item) => (
-                <div key={item.text} className="flex items-center gap-1.5">
+                <div key={item.text} className="flex items-center gap-1.5 micro-lift">
                   <item.icon size={13} className="text-primary" />
                   <span>{item.text}</span>
                 </div>
@@ -103,90 +154,106 @@ export default function LabTestsPage() {
           </div>
         </div>
 
-        <div className="max-w-screen-2xl mx-auto px-4 lg:px-8 xl:px-10 py-6">
-          {/* Category tabs */}
-          <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 mb-6">
-            {LAB_CATEGORIES.map((cat) => (
-              <button
-                key={cat.slug}
-                onClick={() => setSelectedCategory(cat.slug)}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-pill border text-xs font-semibold whitespace-nowrap transition-all flex-shrink-0 ${
-                  selectedCategory === cat.slug
-                    ? 'bg-primary text-primary-foreground border-primary'
-                    : 'bg-card text-muted-foreground border-border hover:border-primary hover:text-primary'
-                }`}
-              >
-                <span>{cat.icon}</span>
-                {cat.name}
-              </button>
-            ))}
+        <div className="section-light-alt">
+          <div className="max-w-screen-2xl mx-auto px-4 lg:px-8 xl:px-10 py-6">
+            {/* Category tabs */}
+            <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2 mb-8">
+              {LAB_CATEGORIES.map((cat) => (
+                <button
+                  key={cat.slug}
+                  onClick={() => setSelectedCategory(cat.slug)}
+                  className={`flex items-center gap-1.5 px-4 py-2 rounded-pill border text-xs font-semibold whitespace-nowrap transition-all flex-shrink-0 micro-lift ${
+                    selectedCategory === cat.slug
+                      ? 'bg-primary text-primary-foreground border-primary shadow-brand'
+                      : 'bg-card text-muted-foreground border-border hover:border-primary hover:text-primary'
+                  }`}
+                >
+                  <span>{cat.icon}</span>
+                  {cat.name}
+                </button>
+              ))}
+            </div>
+
+            {/* Health Packages — dark section */}
+            {showPackages && filteredPackages.length > 0 && (
+              <section ref={packagesRef} className="mb-12">
+                <div className="section-dark rounded-3xl p-8 overflow-hidden relative">
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[60%] opacity-15 pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(139,92,246,0.6) 0%, transparent 70%)' }} />
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-6 reveal-up">
+                      <div className="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
+                        <Package size={18} className="text-purple-400" />
+                      </div>
+                      <div>
+                        <h2 className="tight-headline text-white leading-none">Health Packages</h2>
+                        <p className="text-white/40 text-xs mt-1">Comprehensive panels at the best value</p>
+                      </div>
+                      <span className="ml-auto px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold border border-purple-500/30">Best Value</span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {filteredPackages.map((pkg, i) => (
+                        <div key={pkg.id} className="reveal-scale" style={{ transitionDelay: `${i * 80}ms` }}>
+                          <PackageCard
+                            pkg={pkg}
+                            inCart={isInCart(pkg.id)}
+                            onAdd={() => addToCart(pkg, 'package')}
+                            onRemove={() => removeFromCart(pkg.id)}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* Individual Tests — light section */}
+            {selectedCategory !== 'packages' && (
+              <section ref={testsRef}>
+                <div className="flex items-center justify-between mb-6 reveal-up">
+                  <div>
+                    <h2 className="tight-headline text-foreground leading-none">
+                      Individual Tests
+                      <span className="text-2xl font-bold text-muted-foreground ml-3">({filteredTests.length})</span>
+                    </h2>
+                    <p className="text-sm text-muted-foreground mt-1">Compare prices across certified labs near you</p>
+                  </div>
+                </div>
+                {filteredTests.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-16 text-center">
+                    <div className="text-4xl mb-3">🔬</div>
+                    <h3 className="text-base font-bold text-foreground mb-1">No tests found</h3>
+                    <p className="text-sm text-muted-foreground">Try a different search or category.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {filteredTests.map((test, i) => (
+                      <div key={test.id} className="reveal-up micro-lift glow-border-hover-cyan rounded-xl" style={{ transitionDelay: `${Math.min(i * 40, 400)}ms` }}>
+                        <TestCard
+                          test={test}
+                          inCart={isInCart(test.id)}
+                          onAdd={() => addToCart(test, 'test')}
+                          onRemove={() => removeFromCart(test.id)}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </section>
+            )}
           </div>
-
-          {/* Health Packages */}
-          {showPackages && filteredPackages.length > 0 && (
-            <section className="mb-10">
-              <div className="flex items-center gap-2 mb-4">
-                <Package size={18} className="text-primary" />
-                <h2 className="text-lg font-bold text-foreground">Health Packages</h2>
-                <span className="px-2 py-0.5 rounded-pill bg-primary-soft text-primary text-xs font-semibold">Best Value</span>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {filteredPackages.map((pkg) => (
-                  <PackageCard
-                    key={pkg.id}
-                    pkg={pkg}
-                    inCart={isInCart(pkg.id)}
-                    onAdd={() => addToCart(pkg, 'package')}
-                    onRemove={() => removeFromCart(pkg.id)}
-                  />
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* Individual Tests */}
-          {selectedCategory !== 'packages' && (
-            <section>
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <FlaskConical size={18} className="text-accent" />
-                  <h2 className="text-lg font-bold text-foreground">Individual Tests</h2>
-                  <span className="text-sm text-muted-foreground font-tabular">({filteredTests.length})</span>
-                </div>
-              </div>
-              {filteredTests.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-16 text-center">
-                  <div className="text-4xl mb-3">🔬</div>
-                  <h3 className="text-base font-bold text-foreground mb-1">No tests found</h3>
-                  <p className="text-sm text-muted-foreground">Try a different search or category.</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                  {filteredTests.map((test) => (
-                    <TestCard
-                      key={test.id}
-                      test={test}
-                      inCart={isInCart(test.id)}
-                      onAdd={() => addToCart(test, 'test')}
-                      onRemove={() => removeFromCart(test.id)}
-                    />
-                  ))}
-                </div>
-              )}
-            </section>
-          )}
         </div>
 
         {/* Floating cart */}
         {cartItems.length > 0 && (
           <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm px-4">
-            <div className="bg-foreground text-background rounded-2xl shadow-lg px-5 py-4">
+            <div className="glass-dark rounded-2xl shadow-lg px-5 py-4 border border-white/10">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <ShoppingCart size={16} className="text-primary" />
-                  <span className="font-semibold text-sm">{cartItems.length} test{cartItems.length > 1 ? 's' : ''} added</span>
+                  <ShoppingCart size={16} className="text-blue-400" />
+                  <span className="font-semibold text-sm text-white">{cartItems.length} test{cartItems.length > 1 ? 's' : ''} added</span>
                 </div>
-                <button onClick={() => setShowCart(!showCart)} className="text-background/60 hover:text-background">
+                <button onClick={() => setShowCart(!showCart)} className="text-white/40 hover:text-white">
                   <ChevronDown size={16} className={`transition-transform ${showCart ? 'rotate-180' : ''}`} />
                 </button>
               </div>
@@ -194,10 +261,10 @@ export default function LabTestsPage() {
                 <div className="space-y-2 mb-3 max-h-40 overflow-y-auto">
                   {cartItems.map((item) => (
                     <div key={item.id} className="flex items-center justify-between text-xs">
-                      <span className="text-background/80 truncate flex-1 mr-2">{item.name}</span>
+                      <span className="text-white/70 truncate flex-1 mr-2">{item.name}</span>
                       <div className="flex items-center gap-2">
-                        <span className="font-semibold text-background font-tabular">₹{item.price}</span>
-                        <button onClick={() => removeFromCart(item.id)} className="text-background/40 hover:text-background">
+                        <span className="font-semibold text-white font-tabular">₹{item.price}</span>
+                        <button onClick={() => removeFromCart(item.id)} className="text-white/40 hover:text-white">
                           <X size={12} />
                         </button>
                       </div>
@@ -207,12 +274,13 @@ export default function LabTestsPage() {
               )}
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-background/60">Total</p>
-                  <p className="text-lg font-extrabold text-background font-tabular">₹{totalPrice}</p>
+                  <p className="text-xs text-white/40">Total</p>
+                  <p className="text-lg font-extrabold text-white font-tabular">₹{totalPrice}</p>
                 </div>
                 <Link
                   href={`/order-review?items=${cartItems.map((c) => c.id).join(',')}`}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary-2 transition-colors"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all hover:scale-105 active:scale-95"
+                  style={{ background: 'linear-gradient(135deg, #2563eb, #0891b2)', color: '#fff' }}
                 >
                   Proceed to Book
                 </Link>
@@ -228,8 +296,8 @@ export default function LabTestsPage() {
 function TestCard({ test, inCart, onAdd, onRemove }: { test: LabTest; inCart: boolean; onAdd: () => void; onRemove: () => void }) {
   const discount = Math.round(((test.mrp - test.price) / test.mrp) * 100);
   return (
-    <div className="bg-card rounded-xl border border-border hover:border-primary/30 hover:shadow-md transition-all p-4 flex flex-col gap-3">
-      <Link href={`/lab-tests/${test.id}`} className="block">
+    <div className="bg-card rounded-xl border border-border hover:border-primary/30 hover:shadow-md transition-all p-4 flex flex-col gap-3 h-full card-shine">
+      <Link href={`/lab-tests/${test.id}`} className="block flex-1">
         <div className="flex items-start justify-between gap-2">
           <div>
             <h3 className="text-sm font-semibold text-foreground leading-tight hover:text-primary transition-colors">{test.name}</h3>
@@ -249,39 +317,33 @@ function TestCard({ test, inCart, onAdd, onRemove }: { test: LabTest; inCart: bo
           </span>
           {test.homeCollection && (
             <span className="flex items-center gap-1 text-success">
-              <Home size={10} />
+              <Truck size={10} />
               Home collection
             </span>
           )}
         </div>
-        <div className="text-xs text-muted-foreground bg-muted rounded-lg px-3 py-1.5 mt-3">
-          🧪 {test.preparation}
-        </div>
       </Link>
-      <div className="flex items-center justify-between mt-auto pt-2 border-t border-border">
+      <div className="flex items-center justify-between pt-3 border-t border-border">
         <div>
-          <div className="flex items-baseline gap-1.5">
+          <div className="flex items-center gap-2">
             <span className="text-base font-extrabold text-foreground font-tabular">₹{test.price}</span>
-            <span className="text-xs text-muted-foreground line-through font-tabular">₹{test.mrp}</span>
+            {discount > 0 && (
+              <>
+                <span className="text-xs text-muted-foreground line-through font-tabular">₹{test.mrp}</span>
+                <span className="px-1.5 py-0.5 rounded-pill bg-success/10 text-success text-[10px] font-semibold">{discount}% off</span>
+              </>
+            )}
           </div>
-          <span className="text-[10px] font-semibold text-success">{discount}% off</span>
         </div>
-        {inCart ? (
-          <button
-            onClick={onRemove}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-danger/30 bg-danger-bg text-danger text-xs font-semibold hover:bg-danger hover:text-white transition-all"
-          >
-            <X size={12} />
-            Remove
-          </button>
-        ) : (
-          <button
-            onClick={onAdd}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary-2 transition-all active:scale-95"
-          >
-            + Add
-          </button>
-        )}
+        <button
+          onClick={inCart ? onRemove : onAdd}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all micro-lift ${
+            inCart
+              ? 'bg-success/10 text-success border border-success/30 hover:bg-danger/10 hover:text-danger hover:border-danger/30' :'bg-primary text-primary-foreground hover:bg-primary-2'
+          }`}
+        >
+          {inCart ? <><CheckCircle2 size={12} /> Added</> : <><ShoppingCart size={12} /> Add</>}
+        </button>
       </div>
     </div>
   );
@@ -290,46 +352,31 @@ function TestCard({ test, inCart, onAdd, onRemove }: { test: LabTest; inCart: bo
 function PackageCard({ pkg, inCart, onAdd, onRemove }: { pkg: LabPackage; inCart: boolean; onAdd: () => void; onRemove: () => void }) {
   const discount = Math.round(((pkg.mrp - pkg.price) / pkg.mrp) * 100);
   return (
-    <div className="bg-card rounded-xl border border-border hover:border-primary/30 hover:shadow-md transition-all p-4 flex flex-col gap-3">
-      <Link href={`/lab-tests/${pkg.id}`} className="block">
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="text-sm font-semibold text-foreground leading-tight hover:text-primary transition-colors">{pkg.name}</h3>
-          {pkg.popular && (
-            <span className="flex-shrink-0 px-2 py-0.5 rounded-pill bg-primary-soft text-primary text-[10px] font-semibold">Best Value</span>
-          )}
-        </div>
-        <p className="text-xs text-muted-foreground mt-3">{pkg.description}</p>
-        <div className="flex flex-wrap gap-1 mt-3">
-          {pkg.tests.slice(0, 4).map((t) => (
-            <span key={t} className="px-2 py-0.5 rounded-pill bg-muted text-muted-foreground text-[10px]">{t}</span>
-          ))}
-          {pkg.tests.length > 4 && (
-            <span className="px-2 py-0.5 rounded-pill bg-muted text-muted-foreground text-[10px]">+{pkg.tests.length - 4} more</span>
-          )}
-        </div>
-        <div className="flex flex-wrap gap-2 text-[10px] mt-3">
-          <span className="flex items-center gap-1 text-muted-foreground"><Clock size={10} />{pkg.reportTime}</span>
-          {pkg.homeCollection && <span className="flex items-center gap-1 text-success"><Home size={10} />Home collection</span>}
-          <span className="flex items-center gap-1 text-muted-foreground"><Truck size={10} />{pkg.tests.length} tests</span>
-        </div>
-      </Link>
-      <div className="flex items-center justify-between mt-auto pt-2 border-t border-border">
+    <div className="glass-card rounded-xl p-4 flex flex-col gap-3 h-full bento-hover card-shine">
+      <div className="flex items-start justify-between gap-2">
         <div>
-          <div className="flex items-baseline gap-1.5">
-            <span className="text-base font-extrabold text-foreground font-tabular">₹{pkg.price}</span>
-            <span className="text-xs text-muted-foreground line-through font-tabular">₹{pkg.mrp}</span>
-          </div>
-          <span className="text-[10px] font-semibold text-success">{discount}% off</span>
+          <h3 className="text-sm font-bold text-white leading-tight">{pkg.name}</h3>
+          <p className="text-xs text-white/40 mt-0.5">{(pkg as any).tests?.length ?? 0} tests included</p>
         </div>
-        {inCart ? (
-          <button onClick={onRemove} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-danger/30 bg-danger-bg text-danger text-xs font-semibold hover:bg-danger hover:text-white transition-all">
-            <X size={12} />Remove
-          </button>
-        ) : (
-          <button onClick={onAdd} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary-2 transition-all active:scale-95">
-            + Add
-          </button>
+        {discount > 0 && (
+          <span className="flex-shrink-0 px-2 py-0.5 rounded-pill bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">{discount}% off</span>
         )}
+      </div>
+      <p className="text-xs text-white/40 line-clamp-2 flex-1">{pkg.description}</p>
+      <div className="flex items-center justify-between pt-3 border-t border-white/10">
+        <div>
+          <span className="text-lg font-black text-white font-tabular">₹{pkg.price}</span>
+          {discount > 0 && <span className="text-xs text-white/30 line-through ml-2 font-tabular">₹{pkg.mrp}</span>}
+        </div>
+        <button
+          onClick={inCart ? onRemove : onAdd}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all micro-lift ${
+            inCart
+              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :'bg-white/15 text-white border border-white/20 hover:bg-white/25'
+          }`}
+        >
+          {inCart ? <><CheckCircle2 size={12} /> Added</> : <><ShoppingCart size={12} /> Add</>}
+        </button>
       </div>
     </div>
   );

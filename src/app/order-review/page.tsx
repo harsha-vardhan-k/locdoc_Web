@@ -119,21 +119,22 @@ function OrderReviewContent() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="gradient-hero border-b border-border py-8">
-        <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
-          <div className="flex items-center gap-3 mb-3">
-            <button onClick={() => router.back()} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+      <div className="page-hero-dark py-10">
+        <div className="absolute inset-0 grid-overlay pointer-events-none" />
+        <div className="relative max-w-screen-xl mx-auto px-4 lg:px-8">
+          <div className="flex items-center gap-3 mb-4">
+            <button onClick={() => router.back()} className="flex items-center gap-1.5 text-sm text-white/50 hover:text-white transition-colors">
               <ArrowLeft size={16} />
               Back
             </button>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-              <ShoppingCart size={18} className="text-white" />
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl glass border border-white/15 flex items-center justify-center">
+              <ShoppingCart size={20} className="text-blue-400" />
             </div>
             <div>
-              <h1 className="text-2xl font-extrabold text-foreground">Review Order</h1>
-              <p className="text-sm text-muted-foreground">
+              <h1 className="tight-headline text-white leading-none">Review Order</h1>
+              <p className="text-sm text-white/40 mt-1">
                 {isEmpty ? 'Your cart is empty' : `${totalItems} item${totalItems !== 1 ? 's' : ''} · Review before checkout`}
               </p>
             </div>

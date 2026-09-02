@@ -34,7 +34,7 @@ export default function CategoryBar({
   };
 
   return (
-    <div className="sticky top-16 z-30 bg-card border-b border-border shadow-xs">
+    <div className="sticky top-16 z-[100] bg-card border-b border-border shadow-xs">
       <div className="max-w-screen-2xl mx-auto px-4 lg:px-8 xl:px-10">
         <div className="flex items-center gap-0 overflow-x-auto scrollbar-hide">
           {categories.map((cat) => {
@@ -67,7 +67,7 @@ export default function CategoryBar({
 
                 {/* Dropdown */}
                 {isHovered && cat.subcategories.length > 0 && (
-                  <div className="absolute top-full left-0 mt-0 w-56 bg-card border border-border rounded-b-xl rounded-tr-xl shadow-lg py-2 animate-fade-in z-50">
+                  <div className="absolute top-full left-0 mt-0 w-56 bg-card border border-border rounded-b-xl rounded-tr-xl shadow-lg py-2 animate-fade-in z-[150]">
                     <p className="px-4 py-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                       {cat.name}
                     </p>
