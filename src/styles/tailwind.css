@@ -219,4 +219,159 @@
     line-height: 1.05;
     letter-spacing: -0.03em;
   }
+  /* ── New design system additions ── */
+  .page-hero-dark {
+    background: linear-gradient(135deg, #0a0f1e 0%, #0d1a3a 35%, #0a1628 65%, #060d1f 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .page-hero-dark::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: -5%;
+    width: 55%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(37,99,235,0.35) 0%, transparent 70%);
+    pointer-events: none;
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+  .page-hero-dark::after {
+    content: '';
+    position: absolute;
+    bottom: -10%;
+    right: -5%;
+    width: 45%;
+    height: 50%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(8,145,178,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .section-dark {
+    background: linear-gradient(160deg, #0a0f1e 0%, #0d1a3a 50%, #060d1f 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .section-light {
+    background: #ffffff;
+    position: relative;
+  }
+  .section-light-alt {
+    background: #f8fafc;
+    position: relative;
+  }
+  .page-headline {
+    font-size: clamp(2.25rem, 5vw, 4.5rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+  }
+  .display-stat {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+  .tight-headline {
+    font-size: clamp(1.75rem, 3.5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+  }
+  .micro-lift {
+    transition: transform 200ms cubic-bezier(0.16,1,0.3,1), box-shadow 200ms ease;
+  }
+  .micro-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  }
+  .micro-lift-dark:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  }
+  .glass-light {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.9);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,1);
+  }
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.94);
+    transition: opacity 500ms cubic-bezier(0.16,1,0.3,1), transform 500ms cubic-bezier(0.16,1,0.3,1);
+  }
+  .reveal-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-24px);
+    transition: opacity 600ms cubic-bezier(0.16,1,0.3,1), transform 600ms cubic-bezier(0.16,1,0.3,1);
+  }
+  .reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(24px);
+    transition: opacity 600ms cubic-bezier(0.16,1,0.3,1), transform 600ms cubic-bezier(0.16,1,0.3,1);
+  }
+  .reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .glow-border-hover {
+    transition: border-color 200ms ease, box-shadow 200ms ease;
+  }
+  .glow-border-hover:hover {
+    border-color: rgba(37,99,235,0.5);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.08), 0 8px 32px rgba(37,99,235,0.12);
+  }
+  .glow-border-hover-cyan:hover {
+    border-color: rgba(8,145,178,0.5);
+    box-shadow: 0 0 0 3px rgba(8,145,178,0.08), 0 8px 32px rgba(8,145,178,0.12);
+  }
+  .status-pulse-green {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 0 0 rgba(16,185,129,0.4);
+    animation: statusPulse 2s ease-in-out infinite;
+  }
+  @keyframes statusPulse {
+    0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(16,185,129,0); }
+    100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+  }
+  .grid-overlay {
+    background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(37,99,235,0.3), transparent);
+  }
+  .card-shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .card-shine::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+    transition: left 500ms ease;
+    pointer-events: none;
+  }
+  .card-shine:hover::before {
+    left: 150%;
+  }
 }
