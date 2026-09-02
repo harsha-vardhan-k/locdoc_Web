@@ -52,12 +52,75 @@ const LOCATION_DATA: Record<string, Record<string, Record<string, string[]>>> = 
 const ALL_STATES = Object.keys(LOCATION_DATA);
 
 interface LocationDropdownProps {
-  /** Initial label shown on the trigger button */
   defaultLabel?: string;
-  /** Visual variant — 'dark' for hero/page sections, 'light' for navbar */
   variant?: 'dark' | 'light';
-  /** Called when user applies a location */
   onApply?: (label: string) => void;
+}
+
+interface CustomSelectProps {
+  label: string;
+  value: string;
+  options: string[];
+  placeholder?: string;
+  onChange: (val: string) => void;
+}
+
+function CustomSelect({ label, value, options, placeholder, onChange }: CustomSelectProps) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const displayValue = value || placeholder || 'Choose…';
+
+  return (
+    <div className="mb-3" ref={ref}>
+      <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">
+        {label}
+      </label>
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-gray-800 hover:border-blue-400 focus:outline-none focus:border-blue-500 transition-colors"
+        >
+          <span className={value ? 'text-gray-800' : 'text-gray-400'}>{displayValue}</span>
+          <ChevronDown
+            size={14}
+            className={`text-gray-400 transition-transform duration-200 flex-shrink-0 ml-2 ${open ? 'rotate-180' : ''}`}
+          />
+        </button>
+
+        {open && options.length > 0 && (
+          <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-[60] max-h-44 overflow-y-auto">
+            {options.map((opt) => (
+              <button
+                key={opt}
+                type="button"
+                onClick={() => {
+                  onChange(opt);
+                  setOpen(false);
+                }}
+                className={`w-full text-left px-3 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-700 transition-colors first:rounded-t-xl last:rounded-b-xl ${
+                  value === opt ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700'
+                }`}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default function LocationDropdown({
@@ -141,42 +204,6 @@ export default function LocationDropdown({
   const iconColor = variant === 'dark' ? 'text-cyan-400' : 'text-accent';
   const chevronColor = variant === 'dark' ? 'text-white/40' : '';
 
-  /* ── Dropdown panel styles ── */
-  const panelClass =
-    variant === 'dark' ?'absolute top-full left-0 mt-2 w-80 rounded-2xl shadow-2xl z-50 p-4 animate-fade-in' :'absolute top-full left-0 mt-2 w-80 bg-card border border-border rounded-2xl shadow-xl z-50 p-4 animate-fade-in';
-
-  const panelStyle =
-    variant === 'dark'
-      ? {
-          background: 'rgba(10,15,30,0.95)',
-          border: '1px solid rgba(255,255,255,0.12)',
-          backdropFilter: 'blur(20px)',
-        }
-      : undefined;
-
-  const selectClass =
-    variant === 'dark' ?'w-full appearance-none px-3 py-2.5 pr-8 rounded-xl border border-white/10 bg-white/5 text-sm text-white focus:outline-none focus:border-cyan-400/50 cursor-pointer' :'w-full appearance-none px-3 py-2.5 pr-8 rounded-xl border border-border bg-card text-sm text-foreground focus:outline-none focus:border-primary cursor-pointer';
-
-  const labelClass =
-    variant === 'dark' ?'block text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1' :'block text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1';
-
-  const descClass =
-    variant === 'dark' ?'text-sm text-white/40 mb-3 leading-snug' :'text-sm text-muted-foreground mb-3 leading-snug';
-
-  const locationBtnClass =
-    variant === 'dark' ?'w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border-2 border-cyan-400/30 bg-cyan-500/10 text-cyan-300 text-sm font-semibold hover:bg-cyan-500/20 transition-colors mb-4' :'w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border-2 border-primary/30 bg-primary/5 text-primary text-sm font-semibold hover:bg-primary/10 transition-colors mb-4';
-
-  const applyBtnClass =
-    variant === 'dark' ?'w-full py-2.5 rounded-xl text-sm font-semibold transition-colors text-white' :'w-full py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary-2 transition-colors';
-
-  const applyBtnStyle =
-    variant === 'dark'
-      ? { background: 'linear-gradient(135deg, #0891b2, #2563eb)' }
-      : undefined;
-
-  const chevronSelectColor =
-    variant === 'dark' ? 'text-white/40' : 'text-muted-foreground';
-
   return (
     <div ref={ref} className="relative">
       <button
@@ -192,86 +219,62 @@ export default function LocationDropdown({
       </button>
 
       {open && (
-        <div className={panelClass} style={panelStyle}>
-          <p className={descClass}>
-            Find doctors and clinics near you — pick your state, district, city and area for accurate results.
-          </p>
-
-          <button onClick={handleUseCurrentLocation} className={locationBtnClass}>
+        <div
+          className="absolute top-full left-0 mt-2 w-80 rounded-2xl shadow-2xl z-50 p-4 animate-fade-in"
+          style={{
+            background: '#ffffff',
+            border: '1px solid rgba(0,0,0,0.08)',
+            boxShadow: '0 20px 60px rgba(0,0,0,0.18)',
+          }}
+        >
+          {/* Use current location */}
+          <button
+            onClick={handleUseCurrentLocation}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border-2 border-blue-200 bg-white text-blue-600 text-sm font-semibold hover:bg-blue-50 transition-colors mb-4"
+          >
             <Navigation size={15} />
             Use my current location
           </button>
 
           {/* State */}
-          <div className="mb-3">
-            <label className={labelClass}>State</label>
-            <div className="relative">
-              <select
-                value={selectedState}
-                onChange={(e) => handleStateChange(e.target.value)}
-                className={selectClass}
-              >
-                {ALL_STATES.map((s) => (
-                  <option key={s} value={s} className="bg-slate-900 text-white">{s}</option>
-                ))}
-              </select>
-              <ChevronDown size={14} className={`absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none ${chevronSelectColor}`} />
-            </div>
-          </div>
+          <CustomSelect
+            label="State"
+            value={selectedState}
+            options={ALL_STATES}
+            onChange={handleStateChange}
+          />
 
           {/* District */}
-          <div className="mb-3">
-            <label className={labelClass}>District</label>
-            <div className="relative">
-              <select
-                value={selectedDistrict}
-                onChange={(e) => handleDistrictChange(e.target.value)}
-                className={selectClass}
-              >
-                {districts.map((d) => (
-                  <option key={d} value={d} className="bg-slate-900 text-white">{d}</option>
-                ))}
-              </select>
-              <ChevronDown size={14} className={`absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none ${chevronSelectColor}`} />
-            </div>
-          </div>
+          <CustomSelect
+            label="District"
+            value={selectedDistrict}
+            options={districts}
+            onChange={handleDistrictChange}
+          />
 
           {/* City / Town */}
-          <div className="mb-3">
-            <label className={labelClass}>City / Town</label>
-            <div className="relative">
-              <select
-                value={selectedCity}
-                onChange={(e) => setSelectedCity(e.target.value)}
-                className={selectClass}
-              >
-                {cities.map((c) => (
-                  <option key={c} value={c} className="bg-slate-900 text-white">{c}</option>
-                ))}
-              </select>
-              <ChevronDown size={14} className={`absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none ${chevronSelectColor}`} />
-            </div>
-          </div>
+          <CustomSelect
+            label="City / Town"
+            value={selectedCity}
+            options={cities}
+            onChange={(c) => { setSelectedCity(c); setSelectedArea(''); }}
+          />
 
           {/* Area */}
-          <div className="mb-4">
-            <label className={labelClass}>Area</label>
-            <div className="relative">
-              <select
-                value={selectedArea}
-                onChange={(e) => setSelectedArea(e.target.value)}
-                className={selectClass}
-              >
-                <option value="" className="bg-slate-900 text-white">Choose area</option>
-                {areas.map((a) => (
-                  <option key={a} value={a} className="bg-slate-900 text-white">{a}</option>
-                ))}
-              </select>
-              <ChevronDown size={14} className={`absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none ${chevronSelectColor}`} />
-            </div>
-          </div>
+          <CustomSelect
+            label="Area"
+            value={selectedArea}
+            options={areas}
+            placeholder="Choose area"
+            onChange={setSelectedArea}
+          />
 
-          <button onClick={handleApply} className={applyBtnClass} style={applyBtnStyle}>
+          {/* Apply button */}
+          <button
+            onClick={handleApply}
+            className="w-full py-2.5 rounded-xl text-sm font-semibold text-white transition-colors mt-1"
+            style={{ background: 'linear-gradient(135deg, #3b5bdb, #2563eb)' }}
+          >
             Apply Location
           </button>
         </div>
