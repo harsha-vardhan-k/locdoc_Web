@@ -72,7 +72,12 @@ export default function RegisterBusinessCTA() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="section-light py-16" id="register">
+    <section ref={sectionRef} className="section-light py-16 relative" id="register">
+      {/* Top fade: blends from dark TopClinicsSection */}
+      <div
+        className="absolute top-0 left-0 right-0 h-16 pointer-events-none z-10"
+        style={{ background: 'linear-gradient(to bottom, #ffffff, transparent)' }}
+      />
       <div className="max-w-screen-2xl mx-auto px-4 lg:px-8 xl:px-10">
         {/* Header */}
         <div className="text-center mb-10 reveal-up">
