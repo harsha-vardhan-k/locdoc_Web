@@ -25,7 +25,17 @@ export default function SpecialtiesGrid() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="section-light py-16">
+    <section ref={sectionRef} className="section-light py-16 relative">
+      {/* Top fade: white blends into this section from hero */}
+      <div
+        className="absolute top-0 left-0 right-0 h-16 pointer-events-none z-10"
+        style={{ background: 'linear-gradient(to bottom, #ffffff, transparent)' }}
+      />
+      {/* Bottom fade: transition into dark TopClinicsSection */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none z-10"
+        style={{ background: 'linear-gradient(to bottom, transparent, #0a0f1e)' }}
+      />
       <div className="max-w-screen-2xl mx-auto px-4 lg:px-8 xl:px-10">
         {/* Header */}
         <div className="flex items-end justify-between mb-10 reveal-up">

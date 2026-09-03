@@ -140,6 +140,11 @@ export default function TopClinicsSection() {
           ))}
         </div>
       </div>
+      {/* Bottom fade: transition into white RegisterBusinessCTA */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none"
+        style={{ background: 'linear-gradient(to bottom, transparent, #ffffff)' }}
+      />
     </section>
   );
 }
